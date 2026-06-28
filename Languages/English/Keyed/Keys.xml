@@ -9,7 +9,6 @@
   <PT_Focus_RestTraumaticPassion>Rest a traumatic passion</PT_Focus_RestTraumaticPassion>
   <PT_SelectMemory>Select memory</PT_SelectMemory>
   <PT_SelectSkill>Select skill</PT_SelectSkill>
-  <PT_SemesterMoodGoal>Semester mood goal</PT_SemesterMoodGoal>
   <PT_MentalStabilityOffset>Composure offset: {0}</PT_MentalStabilityOffset>
   <PT_EnableTherapy>Enable therapy?</PT_EnableTherapy>
   <PT_EnableImproveMoodClasses>Enable improve mood classes?</PT_EnableImproveMoodClasses>
@@ -20,9 +19,6 @@
   <PT_SpeedMultiplierMemory>Speed multiplier for memory classes: {0}</PT_SpeedMultiplierMemory>
   <PT_SpeedMultiplierPassion>Speed multiplier for passion classes: {0}</PT_SpeedMultiplierPassion>
   <PT_SpeedMultiplierStability>Speed multiplier for composure classes: {0}</PT_SpeedMultiplierStability>
-  <PT_MoodProgress>+{0} mood</PT_MoodProgress>
-  <PT_MoodGoalMin>0 mood</PT_MoodGoalMin>
-  <PT_MoodGoalMax>30 mood</PT_MoodGoalMax>
   <PT_StabilityProgress>{0}% stability increase</PT_StabilityProgress>
   <PT_TherapistRole>therapist</PT_TherapistRole>
   <PT_PatientRole>patient</PT_PatientRole>

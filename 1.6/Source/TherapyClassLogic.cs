@@ -23,11 +23,6 @@ public class TherapyClassLogic : ClassSubjectLogic
     public Def targetTraumaticSkill;
 
     private const float MentalStabilityProgressMultiplier = 0.05f;
-    private const float ProgressToMoodPoints = 1000f;
-    public override int DefaultSemesterGoal => 10000;
-    private const int DefaultMoodGoal = 10;
-    private const int MoodMin = 1;
-    private const int MoodMax = 30;
     private const int TraumaticPassionSemesterGoal = 60000;
     private const float MentalStabilityProgressDivisor = 10000f;
     private const float SocialLevelToScoreFactor = 0.02f;
@@ -43,7 +38,8 @@ public class TherapyClassLogic : ClassSubjectLogic
     public override string TeacherRoleLabel => "PT_TherapistRole".Translate();
     public override string StudentRoleLabel => "PT_PatientRole".Translate();
     public override JobDef LearningJob => DefsOf.PT_AttendTherapyClass;
-    public override bool IsInfinite => false;
+    public override bool IsInfinite => focusType == TherapyFocusType.ImproveMood;
+    public override int DefaultSemesterGoal => focusType == TherapyFocusType.ImproveMood ? 0 : 10000;
 
     public override float LearningSpeedModifier => 1f;
 
@@ -70,9 +66,7 @@ public class TherapyClassLogic : ClassSubjectLogic
         base.ApplyLearningTick(student, delta);
         if (focusType == TherapyFocusType.ImproveMood)
         {
-            var previousMoods = Mathf.FloorToInt(studyGroup.currentProgress / ProgressToMoodPoints);
-            var newMoods = Mathf.FloorToInt((studyGroup.currentProgress + (ProgressPerTick * delta)) / ProgressToMoodPoints);
-            if (newMoods > previousMoods)
+            if (student.IsHashIntervalTick(1250))
             {
                 student.needs.mood.thoughts.memories.TryGainMemory(DefsOf.PT_TherapyMoodBoost);
             }
@@ -213,16 +207,13 @@ public class TherapyClassLogic : ClassSubjectLogic
             case TherapyFocusType.RestTraumaticPassion:
                 DrawRestTraumaticPassionUI(rect, ref curY, student);
                 break;
-            case TherapyFocusType.ImproveMood:
-                DrawImproveMoodUI(rect, ref curY, student, classDialog);
-                break;
             case TherapyFocusType.MentalStability:
                 DrawMentalStabilityUI(rect, ref curY, student, classDialog);
                 break;
         }
 
         var progressPerTick = ProgressPerTick;
-        if (progressPerTick > 0)
+        if (progressPerTick > 0 && !studyGroup.subjectLogic.IsInfinite)
         {
             var progressRemaining = studyGroup.semesterGoal - studyGroup.currentProgress;
             var estimatedTicks = Mathf.CeilToInt(progressRemaining / progressPerTick);
@@ -243,7 +234,7 @@ public class TherapyClassLogic : ClassSubjectLogic
         if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), GetFocusLabel(focusType)))
         {
             var options = new List<FloatMenuOption>();
-            if (ProgressionTherapyMod.settings.enableImproveMood) options.Add(new FloatMenuOption("PT_Focus_ImproveMood".Translate(), () => { focusType = TherapyFocusType.ImproveMood; studyGroup.semesterGoal = (int)(DefaultMoodGoal * ProgressToMoodPoints); }));
+            if (ProgressionTherapyMod.settings.enableImproveMood) options.Add(new FloatMenuOption("PT_Focus_ImproveMood".Translate(), () => { focusType = TherapyFocusType.ImproveMood; studyGroup.semesterGoal = 0; }));
             if (ProgressionTherapyMod.settings.enableWorkingMemories && GetValidMemories(student).Any()) options.Add(new FloatMenuOption("PT_Focus_WorkThroughMemory".Translate(), () => { focusType = TherapyFocusType.WorkThroughMemory; studyGroup.semesterGoal = DefaultSemesterGoal; targetMemoryDef = GetValidMemories(student).FirstOrDefault()?.def; }));
             if (ProgressionTherapyMod.settings.enableMentalStability) options.Add(new FloatMenuOption("PT_Focus_MentalStability".Translate(), () => { focusType = TherapyFocusType.MentalStability; studyGroup.semesterGoal = 6500; }));
             if (AlphaSkillsCompat.IsActive && AlphaSkillsCompat.GetTraumaticSkills(student).Any()) options.Add(new FloatMenuOption("PT_Focus_RestTraumaticPassion".Translate(), () => { focusType = TherapyFocusType.RestTraumaticPassion; studyGroup.semesterGoal = TraumaticPassionSemesterGoal; targetTraumaticSkill = AlphaSkillsCompat.GetTraumaticSkills(student).First(); }));
@@ -281,28 +272,6 @@ public class TherapyClassLogic : ClassSubjectLogic
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_SelectSkill".Translate());
         if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), targetTraumaticSkill?.LabelCap ?? "None".Translate())) Find.WindowStack.Add(new FloatMenu(AlphaSkillsCompat.GetTraumaticSkills(student).Select(localSk => new FloatMenuOption(localSk.LabelCap, () => targetTraumaticSkill = localSk)).ToList()));
         curY += 30f;
-    }
-
-    private void DrawImproveMoodUI(Rect rect, ref float curY, Pawn student, IClassDialog classDialog)
-    {
-        Text.Anchor = TextAnchor.MiddleCenter;
-        Widgets.Label(new Rect(rect.x, curY, 360f, 25f), "PT_SemesterMoodGoal".Translate());
-        Text.Anchor = TextAnchor.UpperLeft;
-        curY += 30f;
-        if (classDialog is Dialog_EditClass && studyGroup.currentProgress > 0)
-        {
-            Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PE_SemesterProgress".Translate());
-            Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), "PT_MoodProgress".Translate(Mathf.FloorToInt(studyGroup.currentProgress / ProgressToMoodPoints)));
-            curY += 30f;
-        }
-        var currentMoodGoal = (int)(studyGroup.semesterGoal / ProgressToMoodPoints);
-        currentMoodGoal = (int)Widgets.HorizontalSlider(new Rect(rect.x, curY, 360f, 25f), currentMoodGoal, MoodMin, MoodMax, leftAlignedLabel: "PT_MoodGoalMin".Translate(), rightAlignedLabel: "PT_MoodGoalMax".Translate(), roundTo: 1f);
-        studyGroup.semesterGoal = (int)(currentMoodGoal * ProgressToMoodPoints);
-        curY += 30f;
-        Text.Anchor = TextAnchor.MiddleCenter;
-        Widgets.Label(new Rect(rect.x, curY - 15f, 360f, 25f), "PT_MoodProgress".Translate(studyGroup.semesterGoal / ProgressToMoodPoints));
-        Text.Anchor = TextAnchor.UpperLeft;
-        curY += 20f;
     }
 
     private string GetFocusLabel(TherapyFocusType focus) => focus switch
