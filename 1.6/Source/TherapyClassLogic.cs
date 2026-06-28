@@ -58,7 +58,7 @@ public class TherapyClassLogic : ClassSubjectLogic
             {
                 TherapyFocusType.MentalStability => baseScore * MentalStabilityProgressMultiplier * ProgressionTherapyMod.settings.mentalStabilitySpeedMultiplier,
                 TherapyFocusType.ImproveMood => baseScore * ProgressionTherapyMod.settings.moodSpeedMultiplier,
-                TherapyFocusType.WorkThroughMemory => baseScore * ProgressionTherapyMod.settings.memorySpeedMultiplier,
+                TherapyFocusType.WorkThroughMemory => (baseScore * ProgressionTherapyMod.settings.memorySpeedMultiplier) * 1.5f,
                 TherapyFocusType.RestTraumaticPassion => baseScore * ProgressionTherapyMod.settings.passionSpeedMultiplier,
                 _ => baseScore
             };
