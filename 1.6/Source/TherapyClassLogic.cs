@@ -175,6 +175,8 @@ public class TherapyClassLogic : ClassSubjectLogic
 
     public override AcceptanceReport IsTeacherQualified(Pawn teacher)
     {
+        var social = teacher.skills.GetSkill(SkillDefOf.Social);
+        if (social.Level < 15) return new AcceptanceReport("PT_TherapistNotQualified".Translate(teacher.LabelShort));
         var baseReport = base.IsTeacherQualified(teacher);
         if (!baseReport.Accepted)
         {

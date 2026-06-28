@@ -35,4 +35,5 @@
   <PT_TherapyCompletedDesc_RestTraumaticPassion>{0_nameDef} has successfuly rested {0_possessive} traumatic passion.</PT_TherapyCompletedDesc_RestTraumaticPassion>
   <PT_PatientUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_PatientUnavailable>
   <PT_TherapistUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_TherapistUnavailable>
+  <PT_TherapistNotQualified>{0} is not qualified (15 social skill level required).</PT_TherapistNotQualified>
 </LanguageData>
