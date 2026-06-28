@@ -39,6 +39,7 @@ public class TherapyClassLogic : ClassSubjectLogic
     public override string StudentRoleLabel => "PT_PatientRole".Translate();
     public override JobDef LearningJob => DefsOf.PT_AttendTherapyClass;
     public override bool IsInfinite => focusType == TherapyFocusType.ImproveMood;
+    public override bool ShowAttendance => false;
     public override int DefaultSemesterGoal => focusType == TherapyFocusType.ImproveMood ? 0 : 10000;
 
     public override float LearningSpeedModifier => 1f;
