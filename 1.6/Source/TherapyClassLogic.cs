@@ -218,8 +218,23 @@ public class TherapyClassLogic : ClassSubjectLogic
                 DrawMentalStabilityUI(rect, ref curY, student, classDialog);
                 break;
         }
-    }
 
+        var progressPerTick = ProgressPerTick;
+        if (progressPerTick > 0)
+        {
+            var progressRemaining = studyGroup.semesterGoal - studyGroup.currentProgress;
+            var estimatedTicks = Mathf.CeilToInt(progressRemaining / progressPerTick);
+            Widgets.Label(new Rect(rect.x, curY, 360f, 25f),
+                "PE_StudyTimeNeeded".Translate(estimatedTicks.ToStringTicksToPeriod()));
+            curY += 30f;
+            var sessionsNeeded = Mathf.Ceil(
+                (float)estimatedTicks / (GenDate.TicksPerHour * studyGroup.Duration));
+            Widgets.Label(new Rect(rect.x, curY, 360f, 25f),
+                "PE_StudySessionsNeeded".Translate(sessionsNeeded.ToString("F0")
+                    .Colorize(ColoredText.DateTimeColor)));
+            curY += 30f;
+        }
+    }
     private void DrawFocusTypeSelector(Rect rect, ref float curY, Pawn student)
     {
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_TherapeuticFocus".Translate());
