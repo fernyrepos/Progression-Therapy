@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThoughtDef>
+    <defName>PT_TherapyMoodBoost</defName>
+    <durationDays>3</durationDays>
+    <stackLimit>100</stackLimit>
+    <stages>
+        <li>
+            <label>therapy</label>
+            <description>I feel better after a therapy session.</description>
+            <baseMoodEffect>1</baseMoodEffect>
+        </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

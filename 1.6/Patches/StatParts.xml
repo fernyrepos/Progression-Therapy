@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/StatDef[defName="MentalBreakThreshold"]/parts</xpath>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="MentalBreakThreshold"]/parts</xpath>
+            <value>
+                <li Class="ProgressionTherapy.StatPart_MentalStability" />
+            </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="MentalBreakThreshold"]</xpath>
+            <value>
+                <parts>
+                    <li Class="ProgressionTherapy.StatPart_MentalStability" />
+                </parts>
+            </value>
+        </nomatch>
+    </Operation>
+</Patch>

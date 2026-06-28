@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <NeedDef>
+    <defName>PT_MentalStability</defName>
+    <needClass>ProgressionTherapy.Need_MentalStability</needClass>
+    <label>mental stability</label>
+    <description>Mental stability reflects the colonist's resistance to mental breaks. A higher stability acts as a buffer against breaking.</description>
+  </NeedDef>
+</Defs>

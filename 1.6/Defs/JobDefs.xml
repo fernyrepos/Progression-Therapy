@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <JobDef>
+        <defName>PT_AttendTherapyClass</defName>
+        <driverClass>ProgressionTherapy.JobDriver_AttendTherapyClass</driverClass>
+        <reportString>attending therapy.</reportString>
+        <casualInterruptible>false</casualInterruptible>
+    </JobDef>
+</Defs>

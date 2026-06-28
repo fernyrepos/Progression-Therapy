@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <PT_Therapy>Therapy</PT_Therapy>
+  <PT_TherapyDesc>A therapy for a patient.</PT_TherapyDesc>
+  <PT_TherapeuticFocus>Therapeutic focus</PT_TherapeuticFocus>
+  <PT_Focus_ImproveMood>Improve mood</PT_Focus_ImproveMood>
+  <PT_Focus_WorkThroughMemory>Work through a memory</PT_Focus_WorkThroughMemory>
+  <PT_Focus_MentalStability>Mental stability</PT_Focus_MentalStability>
+  <PT_Focus_RestTraumaticPassion>Rest a traumatic passion</PT_Focus_RestTraumaticPassion>
+  <PT_SelectMemory>Select memory</PT_SelectMemory>
+  <PT_SelectSkill>Select skill</PT_SelectSkill>
+  <PT_SemesterMoodGoal>Semester mood goal</PT_SemesterMoodGoal>
+  <PT_MentalStabilityOffset>Mental stability offset: {0}</PT_MentalStabilityOffset>
+  <PT_EnableTherapy>Enable therapy?</PT_EnableTherapy>
+  <PT_EnableImproveMoodClasses>Enable improve mood classes?</PT_EnableImproveMoodClasses>
+  <PT_EnableMentalStabilitySystem>Enable mental stability system?</PT_EnableMentalStabilitySystem>
+  <PT_EnableWorkingThroughMemories>Enable working through memories?</PT_EnableWorkingThroughMemories>
+  <PT_GlobalNerfMentalBreakThreshold>Global nerf of mental break threshold: {0}</PT_GlobalNerfMentalBreakThreshold>
+  <PT_SpeedMultiplierMood>Speed multiplier for mood classes: {0}</PT_SpeedMultiplierMood>
+  <PT_SpeedMultiplierMemory>Speed multiplier for memory classes: {0}</PT_SpeedMultiplierMemory>
+  <PT_SpeedMultiplierPassion>Speed multiplier for passion classes: {0}</PT_SpeedMultiplierPassion>
+  <PT_SpeedMultiplierStability>Speed multiplier for mental stability classes: {0}</PT_SpeedMultiplierStability>
+  <PT_MoodProgress>+{0} mood</PT_MoodProgress>
+  <PT_MoodGoalMin>0 mood</PT_MoodGoalMin>
+  <PT_MoodGoalMax>30 mood</PT_MoodGoalMax>
+  <PT_StabilityProgress>{0}% stability increase</PT_StabilityProgress>
+  <PT_TherapistRole>therapist</PT_TherapistRole>
+  <PT_PatientRole>patient</PT_PatientRole>
+  <PT_JobReport_WaitingForPatient>Waiting for patient.</PT_JobReport_WaitingForPatient>
+  <PT_JobReport_PerformingTherapy>Performing therapy</PT_JobReport_PerformingTherapy>
+  <PT_TherapyCompleted>Therapy program completed</PT_TherapyCompleted>
+  <PT_TherapyCompletedDesc_ImproveMood>{0_nameDef} has completed {0_possessive} therapy sessions, achieving a substantial mood boost.</PT_TherapyCompletedDesc_ImproveMood>
+  <PT_TherapyCompletedDesc_WorkThroughMemory>{0_nameDef} has successfully worked through {0_possessive} traumatic memory.</PT_TherapyCompletedDesc_WorkThroughMemory>
+  <PT_TherapyCompletedDesc_MentalStability>{0_nameDef} has finished {0_possessive} mental stability training, strengthening resilience against mental breaks.</PT_TherapyCompletedDesc_MentalStability>
+  <PT_TherapyCompletedDesc_RestTraumaticPassion>{0_nameDef} has successfuly rested {0_possessive} traumatic passion.</PT_TherapyCompletedDesc_RestTraumaticPassion>
+  <PT_PatientUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_PatientUnavailable>
+  <PT_TherapistUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_TherapistUnavailable>
+</LanguageData>

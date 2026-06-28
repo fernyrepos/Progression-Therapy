@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ModMetaData>
+    <name>Progression: Therapy</name>
+    <author>ferny</author>
+    <packageId>ferny.ProgressionTherapy</packageId>
+    <description />
+    <supportedVersions>
+        <li>1.6</li>
+    </supportedVersions>
+    <loadAfter>
+        <li>Ludeon.RimWorld</li>
+        <li>Ludeon.RimWorld.Royalty</li>
+        <li>Ludeon.RimWorld.Ideology</li>
+        <li>Ludeon.RimWorld.Biotech</li>
+        <li>Ludeon.RimWorld.Anomaly</li>
+        <li>Ludeon.RimWorld.Odyssey</li>
+        <li>brrainz.harmony</li>
+        <li>ferny.ProgressionEducation</li>
+    </loadAfter>
+    <modDependencies>
+        <li>
+            <packageId>ferny.ProgressionEducation</packageId>
+            <displayName>Progression: Education</displayName>
+            <steamWorkshopUrl>steam://url/CommunityFilePage/3590863552</steamWorkshopUrl>
+            <downloadUrl>https://github.com/fernyrepos/Progression-Education</downloadUrl>
+        </li>
+    </modDependencies>
+</ModMetaData>
