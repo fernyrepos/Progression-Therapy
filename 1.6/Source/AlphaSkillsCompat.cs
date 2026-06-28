@@ -15,10 +15,11 @@ public static class AlphaSkillsCompat
     static AlphaSkillsCompat()
     {
         if (!IsActive) return;
-        var def = DefDatabase<Def>.GetNamedSilentFail("AS_TraumaticPassion");
+        var passionDefType = AccessTools.TypeByName("VSE.Passions.PassionDef");
+        var def = GenDefDatabase.GetDef(passionDefType, "AS_TraumaticPassion");
         TraumaticPassionIndex = (byte)def.index;
-        var type = AccessTools.TypeByName("VSE.Passions.LearnRateFactorCache");
-        ClearCacheForMethod = AccessTools.Method(type, "ClearCacheFor");
+        var cacheType = AccessTools.TypeByName("VSE.Passions.LearnRateFactorCache");
+        ClearCacheForMethod = AccessTools.Method(cacheType, "ClearCacheFor");
     }
 
     public static IEnumerable<SkillDef> GetTraumaticSkills(Pawn pawn)
@@ -40,6 +41,6 @@ public static class AlphaSkillsCompat
         if (skill == null) return;
         if ((uint)skill.passion != (uint)TraumaticPassionIndex) return;
         skill.passion = Passion.Major;
-        ClearCacheForMethod?.Invoke(null, new object[] { skill, null });
+        ClearCacheForMethod.Invoke(null, new object[] { skill, null });
     }
 }
