@@ -3,7 +3,7 @@
     <ThingDef ParentName="BuildingBase">
         <defName>PT_TherapyCouch</defName>
         <label>therapy couch</label>
-        <description>todo</description>
+        <description>Designed for therapy education, this couch provides a comfortable and private space for colonists to work on their mental stability and composure.</description>
         <graphicData>
             <texPath>TherapyCouch/TherapyCouch</texPath>
             <graphicClass>Graphic_Multi</graphicClass>
@@ -32,6 +32,7 @@
             <Beauty>5</Beauty>
         </statBases>
         <size>(1,2)</size>
+		<defaultPlacingRot>East</defaultPlacingRot>
         <researchPrerequisites>
             <li>ComplexFurniture</li>
         </researchPrerequisites>

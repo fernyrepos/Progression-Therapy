@@ -3,7 +3,7 @@
     <name>Progression: Therapy</name>
     <author>ferny</author>
     <packageId>ferny.ProgressionTherapy</packageId>
-    <description />
+    <description>A mod that adds a therapy system, allowing colonists to improve their mood and composure.</description>
     <supportedVersions>
         <li>1.6</li>
     </supportedVersions>
