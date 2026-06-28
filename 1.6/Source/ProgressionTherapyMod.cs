@@ -25,13 +25,13 @@ namespace ProgressionTherapy
 			listing.Label("PT_GlobalNerfMentalBreakThreshold".Translate(settings.globalMentalBreakNerf.ToStringPercent()));
 			settings.globalMentalBreakNerf = listing.Slider(settings.globalMentalBreakNerf, 0f, 1f);
 			listing.Label("PT_SpeedMultiplierMood".Translate(settings.moodSpeedMultiplier.ToStringPercent()));
-			settings.moodSpeedMultiplier = listing.Slider(settings.moodSpeedMultiplier, 0.1f, 3f);
+			settings.moodSpeedMultiplier = listing.Slider(settings.moodSpeedMultiplier, 0.1f, 10f);
 			listing.Label("PT_SpeedMultiplierMemory".Translate(settings.memorySpeedMultiplier.ToStringPercent()));
-			settings.memorySpeedMultiplier = listing.Slider(settings.memorySpeedMultiplier, 0.1f, 3f);
+			settings.memorySpeedMultiplier = listing.Slider(settings.memorySpeedMultiplier, 0.1f, 10f);
 			listing.Label("PT_SpeedMultiplierPassion".Translate(settings.passionSpeedMultiplier.ToStringPercent()));
-			settings.passionSpeedMultiplier = listing.Slider(settings.passionSpeedMultiplier, 0.1f, 3f);
+			settings.passionSpeedMultiplier = listing.Slider(settings.passionSpeedMultiplier, 0.1f, 10f);
 			listing.Label("PT_SpeedMultiplierStability".Translate(settings.mentalStabilitySpeedMultiplier.ToStringPercent()));
-			settings.mentalStabilitySpeedMultiplier = listing.Slider(settings.mentalStabilitySpeedMultiplier, 0.1f, 3f);
+			settings.mentalStabilitySpeedMultiplier = listing.Slider(settings.mentalStabilitySpeedMultiplier, 0.1f, 10f);
 			listing.End();
 		}
 
