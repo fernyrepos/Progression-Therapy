@@ -311,24 +311,33 @@ public class TherapyClassLogic : ClassSubjectLogic
 
     private void DrawMentalStabilityUI(Rect rect, ref float curY, Pawn student, IClassDialog classDialog)
     {
-        Text.Anchor = TextAnchor.MiddleCenter;
-        Widgets.Label(new Rect(rect.x, curY, 360f, 25f), "PE_SemesterGoal".Translate());
-        Text.Anchor = TextAnchor.UpperLeft;
-        curY += 30f;
-        if (classDialog is Dialog_EditClass && studyGroup.currentProgress > 0)
+        if (classDialog is Dialog_EditClass)
         {
-            Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PE_SemesterProgress".Translate());
-            Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), (studyGroup.currentProgress / 100f).ToString("F0") + "%");
+            if (studyGroup.currentProgress > 0)
+            {
+                Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PE_SemesterProgress".Translate());
+                Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), (studyGroup.currentProgress / 100f).ToString("F0") + "%");
+                curY += 30f;
+            }
+            Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PE_SemesterGoal".Translate());
+            Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), "PT_StabilityProgress".Translate((studyGroup.semesterGoal / 100f).ToString("F0")));
             curY += 30f;
         }
-        var currentGoal = studyGroup.semesterGoal / 100f;
-        currentGoal = Widgets.HorizontalSlider(new Rect(rect.x, curY, 360f, 25f), currentGoal, 1f, 100f, leftAlignedLabel: "0%", rightAlignedLabel: "100%", roundTo: 1f);
-        studyGroup.semesterGoal = (int)(currentGoal * 100f);
-        curY += 30f;
+        else
+        {
+            Text.Anchor = TextAnchor.MiddleCenter;
+            Widgets.Label(new Rect(rect.x, curY, 360f, 25f), "PE_SemesterGoal".Translate());
+            Text.Anchor = TextAnchor.UpperLeft;
+            curY += 30f;
+            var currentGoal = studyGroup.semesterGoal / 100f;
+            currentGoal = Widgets.HorizontalSlider(new Rect(rect.x, curY, 360f, 25f), currentGoal, 1f, 100f, leftAlignedLabel: "0%", rightAlignedLabel: "100%", roundTo: 1f);
+            studyGroup.semesterGoal = (int)(currentGoal * 100f);
+            curY += 30f;
 
-        Text.Anchor = TextAnchor.MiddleCenter;
-        Widgets.Label(new Rect(rect.x, curY - 15f, 360f, 25f), "PT_StabilityProgress".Translate(currentGoal));
-        Text.Anchor = TextAnchor.UpperLeft;
-        curY += 20f;
+            Text.Anchor = TextAnchor.MiddleCenter;
+            Widgets.Label(new Rect(rect.x, curY - 15f, 360f, 25f), "PT_StabilityProgress".Translate(currentGoal));
+            Text.Anchor = TextAnchor.UpperLeft;
+            curY += 20f;
+        }
     }
 }
