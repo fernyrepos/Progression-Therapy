@@ -20,7 +20,7 @@ public class TherapyClassLogic : ClassSubjectLogic
 {
     public TherapyFocusType focusType = TherapyFocusType.ImproveMood;
     public ThoughtDef targetMemoryDef;
-    public Def targetTraumaticSkill;
+    public SkillDef targetTraumaticSkill;
 
     private const float MentalStabilityProgressMultiplier = 0.05f;
     private const int TraumaticPassionSemesterGoal = 60000;
@@ -37,6 +37,7 @@ public class TherapyClassLogic : ClassSubjectLogic
     public override string BenchLabel => DefsOf.PT_TherapyCouch.label;
     public override string TeacherRoleLabel => "PT_TherapistRole".Translate();
     public override string StudentRoleLabel => "PT_PatientRole".Translate();
+    public override bool CanChangeSubject => false;
     public override JobDef LearningJob => DefsOf.PT_AttendTherapyClass;
     public override bool IsInfinite => focusType == TherapyFocusType.ImproveMood;
     public override bool ShowAttendance => false;
@@ -94,10 +95,9 @@ public class TherapyClassLogic : ClassSubjectLogic
         }
         else if (focusType == TherapyFocusType.RestTraumaticPassion)
         {
-            AlphaSkillsCompat.RemoveTraumaticPassion(student, targetTraumaticSkill as SkillDef);
+            AlphaSkillsCompat.RemoveTraumaticPassion(student, targetTraumaticSkill);
         }
     }
-
     public override string GetCompletionLetterLabel()
     {
         return "PT_TherapyCompleted".Translate();
@@ -197,16 +197,16 @@ public class TherapyClassLogic : ClassSubjectLogic
         var student = studyGroup.students.FirstOrDefault();
         if (student == null) return;
 
-        DrawFocusTypeSelector(rect, ref curY, student);
+        DrawFocusTypeSelector(rect, ref curY, student, classDialog);
         curY += 30f;
 
         switch (focusType)
         {
             case TherapyFocusType.WorkThroughMemory:
-                DrawWorkThroughMemoryUI(rect, ref curY, student);
+                DrawWorkThroughMemoryUI(rect, ref curY, student, classDialog);
                 break;
             case TherapyFocusType.RestTraumaticPassion:
-                DrawRestTraumaticPassionUI(rect, ref curY, student);
+                DrawRestTraumaticPassionUI(rect, ref curY, student, classDialog);
                 break;
             case TherapyFocusType.MentalStability:
                 DrawMentalStabilityUI(rect, ref curY, student, classDialog);
@@ -229,21 +229,29 @@ public class TherapyClassLogic : ClassSubjectLogic
             curY += 30f;
         }
     }
-    private void DrawFocusTypeSelector(Rect rect, ref float curY, Pawn student)
+    
+    private void DrawFocusTypeSelector(Rect rect, ref float curY, Pawn student, IClassDialog classDialog)
     {
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_TherapeuticFocus".Translate());
-        if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), GetFocusLabel(focusType)))
+        if (classDialog is Dialog_EditClass)
         {
-            var options = new List<FloatMenuOption>();
-            if (ProgressionTherapyMod.settings.enableImproveMood) options.Add(new FloatMenuOption("PT_Focus_ImproveMood".Translate(), () => { focusType = TherapyFocusType.ImproveMood; studyGroup.semesterGoal = 0; }));
-            if (ProgressionTherapyMod.settings.enableWorkingMemories && GetValidMemories(student).Any()) options.Add(new FloatMenuOption("PT_Focus_WorkThroughMemory".Translate(), () => { focusType = TherapyFocusType.WorkThroughMemory; studyGroup.semesterGoal = DefaultSemesterGoal; targetMemoryDef = GetValidMemories(student).FirstOrDefault()?.def; }));
-            if (ProgressionTherapyMod.settings.enableMentalStability) options.Add(new FloatMenuOption("PT_Focus_MentalStability".Translate(), () => { focusType = TherapyFocusType.MentalStability; studyGroup.semesterGoal = 6500; }));
-            if (AlphaSkillsCompat.IsActive && AlphaSkillsCompat.GetTraumaticSkills(student).Any()) options.Add(new FloatMenuOption("PT_Focus_RestTraumaticPassion".Translate(), () => { focusType = TherapyFocusType.RestTraumaticPassion; studyGroup.semesterGoal = TraumaticPassionSemesterGoal; targetTraumaticSkill = AlphaSkillsCompat.GetTraumaticSkills(student).First(); }));
-            Find.WindowStack.Add(new FloatMenu(options));
+            Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), GetFocusLabel(focusType));
+        }
+        else
+        {
+            if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), GetFocusLabel(focusType)))
+            {
+                var options = new List<FloatMenuOption>();
+                if (ProgressionTherapyMod.settings.enableImproveMood) options.Add(new FloatMenuOption("PT_Focus_ImproveMood".Translate(), () => { focusType = TherapyFocusType.ImproveMood; studyGroup.semesterGoal = 0; }));
+                if (ProgressionTherapyMod.settings.enableWorkingMemories && GetValidMemories(student).Any()) options.Add(new FloatMenuOption("PT_Focus_WorkThroughMemory".Translate(), () => { focusType = TherapyFocusType.WorkThroughMemory; studyGroup.semesterGoal = DefaultSemesterGoal; targetMemoryDef = GetValidMemories(student).FirstOrDefault()?.def; }));
+                if (ProgressionTherapyMod.settings.enableMentalStability) options.Add(new FloatMenuOption("PT_Focus_MentalStability".Translate(), () => { focusType = TherapyFocusType.MentalStability; studyGroup.semesterGoal = 6500; }));
+                if (AlphaSkillsCompat.IsActive && AlphaSkillsCompat.GetTraumaticSkills(student).Any()) options.Add(new FloatMenuOption("PT_Focus_RestTraumaticPassion".Translate(), () => { focusType = TherapyFocusType.RestTraumaticPassion; studyGroup.semesterGoal = TraumaticPassionSemesterGoal; targetTraumaticSkill = AlphaSkillsCompat.GetTraumaticSkills(student).First(); }));
+                Find.WindowStack.Add(new FloatMenu(options));
+            }
         }
     }
 
-    private void DrawWorkThroughMemoryUI(Rect rect, ref float curY, Pawn student)
+    private void DrawWorkThroughMemoryUI(Rect rect, ref float curY, Pawn student, IClassDialog classDialog)
     {
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_SelectMemory".Translate());
 
@@ -261,17 +269,34 @@ public class TherapyClassLogic : ClassSubjectLogic
             Text.Anchor = prevAnchor;
         }
 
-        if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel))
+        if (classDialog is Dialog_EditClass)
         {
-            Find.WindowStack.Add(new FloatMenu(GetValidMemories(student).GroupBy(m => m.def).Select(g => g.First()).Select(localMem => new FloatMenuOption(localMem.LabelCap, () => targetMemoryDef = localMem.def)).ToList()));
+            Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel);
+        }
+        else
+        {
+            if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel))
+            {
+                Find.WindowStack.Add(new FloatMenu(GetValidMemories(student).GroupBy(m => m.def).Select(g => g.First()).Select(localMem => new FloatMenuOption(localMem.LabelCap, () => targetMemoryDef = localMem.def)).ToList()));
+            }
         }
         curY += 30f;
     }
 
-    private void DrawRestTraumaticPassionUI(Rect rect, ref float curY, Pawn student)
+    private void DrawRestTraumaticPassionUI(Rect rect, ref float curY, Pawn student, IClassDialog classDialog)
     {
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_SelectSkill".Translate());
-        if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), targetTraumaticSkill?.LabelCap ?? "None".Translate())) Find.WindowStack.Add(new FloatMenu(AlphaSkillsCompat.GetTraumaticSkills(student).Select(localSk => new FloatMenuOption(localSk.LabelCap, () => targetTraumaticSkill = localSk)).ToList()));
+        if (classDialog is Dialog_EditClass)
+        {
+            Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), targetTraumaticSkill?.LabelCap ?? "None".Translate());
+        }
+        else
+        {
+            if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), targetTraumaticSkill?.LabelCap ?? "None".Translate()))
+            {
+                Find.WindowStack.Add(new FloatMenu(AlphaSkillsCompat.GetTraumaticSkills(student).Select(localSk => new FloatMenuOption(localSk.LabelCap, () => targetTraumaticSkill = localSk)).ToList()));
+            }
+        }
         curY += 30f;
     }
 
