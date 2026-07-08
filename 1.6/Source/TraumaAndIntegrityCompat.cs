@@ -11,8 +11,6 @@ namespace ProgressionTherapy
     {
         private static readonly MethodInfo GetDataMethod;
         private static readonly MethodInfo TraumaticTraitMethod;
-        private static readonly FieldInfo TemperedField;
-        private static readonly FieldInfo TraumaField;
         public static bool IsActive { get; } = ModsConfig.IsActive("ferny.TraumaAndIntegrity");
         static TraumaAndIntegrityCompat()
         {
@@ -21,8 +19,6 @@ namespace ProgressionTherapy
             GetDataMethod = AccessTools.Method(storeType, "GetTraumaIntegrityData", new[] { typeof(Pawn) });
             var dataType = AccessTools.TypeByName("TraumaAndIntegrity.TraumaIntegrityData");
             TraumaticTraitMethod = AccessTools.Method(dataType, "GetTraumaticTrait");
-            TemperedField = AccessTools.Field(dataType, "tempered");
-            TraumaField = AccessTools.Field(dataType, "trauma");
         }
 
         public static TraitDef GetTraumaticTrait(Pawn pawn)

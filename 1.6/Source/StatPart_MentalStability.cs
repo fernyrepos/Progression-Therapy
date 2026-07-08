@@ -7,14 +7,14 @@ public class StatPart_MentalStability : StatPart
 {
     public override void TransformValue(StatRequest req, ref float val)
     {
-        if (!TryGetNeed(req, out var need)) return;
+        if (!TryGetNeed(req, out var need) || PawnGenerator.IsBeingGenerated(need.pawn)) return;
         var nerf = ProgressionTherapyMod.settings.globalMentalBreakNerf;
         val += nerf - need.CurLevelPercentage * nerf;
     }
 
     public override string ExplanationPart(StatRequest req)
     {
-        if (!TryGetNeed(req, out var need)) return null;
+        if (!TryGetNeed(req, out var need) || PawnGenerator.IsBeingGenerated(need.pawn)) return null;
         var nerf = ProgressionTherapyMod.settings.globalMentalBreakNerf;
         var offset = nerf - need.CurLevelPercentage * nerf;
         return offset != 0 ? "PT_MentalStabilityOffset".Translate(offset.ToStringPercentSigned()) : null;
