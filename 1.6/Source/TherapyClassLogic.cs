@@ -120,7 +120,7 @@ public class TherapyClassLogic : ClassSubjectLogic
             TherapyFocusType.WorkThroughMemory => "PT_TherapyCompletedDesc_WorkThroughMemory".Translate(student, targetMemoryDef.LabelCap),
             TherapyFocusType.MentalStability => "PT_TherapyCompletedDesc_MentalStability".Translate(student),
             TherapyFocusType.RestTraumaticPassion => "PT_TherapyCompletedDesc_RestTraumaticPassion".Translate(student, targetTraumaticSkill.LabelCap),
-            TherapyFocusType.ResolveTraumaticTrait => "PT_TherapyCompletedDesc_ResolveTraumaticTrait".Translate(student, targetTraumaticTrait.LabelCap),
+            TherapyFocusType.ResolveTraumaticTrait => "PT_TherapyCompletedDesc_ResolveTraumaticTrait".Translate(student, targetTraumaticTrait.DataAtDegree(0).GetLabelFor(student)),
             _ => null
         };
     }
@@ -327,7 +327,7 @@ public class TherapyClassLogic : ClassSubjectLogic
     {
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_SelectTraumaticTrait".Translate());
         var trait = TraumaAndIntegrityCompat.GetTraumaticTrait(student);
-        var buttonLabel = trait.LabelCap;
+        var buttonLabel = trait.DataAtDegree(0).GetLabelFor(student);
         if (classDialog is Dialog_EditClass)
         {
             Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel);
@@ -336,7 +336,7 @@ public class TherapyClassLogic : ClassSubjectLogic
         {
             if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel))
             {
-                var options = new List<FloatMenuOption> { new FloatMenuOption(trait.LabelCap, () => targetTraumaticTrait = trait) };
+                var options = new List<FloatMenuOption> { new FloatMenuOption(trait.DataAtDegree(0).GetLabelFor(student), () => targetTraumaticTrait = trait) };
                 Find.WindowStack.Add(new FloatMenu(options));
             }
         }
