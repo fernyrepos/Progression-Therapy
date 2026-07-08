@@ -327,7 +327,7 @@ public class TherapyClassLogic : ClassSubjectLogic
     {
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_SelectTraumaticTrait".Translate());
         var trait = TraumaAndIntegrityCompat.GetTraumaticTrait(student);
-        var buttonLabel = trait.DataAtDegree(0).GetLabelFor(student);
+        var buttonLabel = trait.DataAtDegree(0).GetLabelCapFor(student);
         if (classDialog is Dialog_EditClass)
         {
             Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel);
