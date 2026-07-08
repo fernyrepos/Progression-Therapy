@@ -104,7 +104,6 @@ public class TherapyClassLogic : ClassSubjectLogic
         {
             var trait = student.story.traits.GetTrait(targetTraumaticTrait);
             student.story.traits.RemoveTrait(trait);
-            TraumaAndIntegrityCompat.ClearTraumaticTrait(student);
         }
     }
     public override string GetCompletionLetterLabel()
