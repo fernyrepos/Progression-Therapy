@@ -32,7 +32,7 @@
   <PT_PatientUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_PatientUnavailable>
   <PT_TherapistUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_TherapistUnavailable>
   <PT_TherapistNotQualified>{0} is not qualified (15 social skill level required).</PT_TherapistNotQualified>
-  <PT_Focus_ResolveTraumaticTrait>Resolve traumatic trait</PT_Focus_ResolveTraumaticTrait>
+  <PT_Focus_ResolveTraumaticTrait>Rest traumatic trait</PT_Focus_ResolveTraumaticTrait>
   <PT_SelectTraumaticTrait>Select traumatic trait</PT_SelectTraumaticTrait>
   <PT_TherapyCompletedDesc_ResolveTraumaticTrait>{0} has successfully worked through their traumatic trait and left it behind.</PT_TherapyCompletedDesc_ResolveTraumaticTrait>
   <PT_PatientNotTempered>{0} is not tempered.</PT_PatientNotTempered>
