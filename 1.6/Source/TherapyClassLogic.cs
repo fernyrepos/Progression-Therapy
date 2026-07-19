@@ -13,7 +13,8 @@ public enum TherapyFocusType
     WorkThroughMemory,
     MentalStability,
     RestTraumaticPassion,
-    ResolveTraumaticTrait
+    ResolveTraumaticTrait,
+    ResolveTraumaticDesire
 }
 
 [HotSwappable]
@@ -23,6 +24,7 @@ public class TherapyClassLogic : ClassSubjectLogic
     public ThoughtDef targetMemoryDef;
     public SkillDef targetTraumaticSkill;
     public TraitDef targetTraumaticTrait;
+    public string targetTraumaticDesireDefName;
 
     private const float MentalStabilityProgressMultiplier = 0.05f;
     private const int TraumaticPassionSemesterGoal = 60000;
@@ -43,7 +45,7 @@ public class TherapyClassLogic : ClassSubjectLogic
     public override JobDef LearningJob => DefsOf.PT_AttendTherapyClass;
     public override bool IsInfinite => focusType == TherapyFocusType.ImproveMood;
     public override bool ShowAttendance => false;
-    public override int DefaultSemesterGoal => focusType == TherapyFocusType.ImproveMood ? 0 : (focusType == TherapyFocusType.ResolveTraumaticTrait ? 120000 : 10000);
+    public override int DefaultSemesterGoal => focusType == TherapyFocusType.ImproveMood ? 0 : ((focusType == TherapyFocusType.ResolveTraumaticTrait || focusType == TherapyFocusType.ResolveTraumaticDesire) ? 120000 : 10000);
 
     public override float LearningSpeedModifier => 1f;
 
@@ -61,6 +63,7 @@ public class TherapyClassLogic : ClassSubjectLogic
                 TherapyFocusType.WorkThroughMemory => (baseScore * ProgressionTherapyMod.settings.memorySpeedMultiplier) * 1.5f,
                 TherapyFocusType.RestTraumaticPassion => baseScore * ProgressionTherapyMod.settings.passionSpeedMultiplier,
                 TherapyFocusType.ResolveTraumaticTrait => baseScore * ProgressionTherapyMod.settings.passionSpeedMultiplier,
+                TherapyFocusType.ResolveTraumaticDesire => baseScore * ProgressionTherapyMod.settings.passionSpeedMultiplier,
                 _ => baseScore
             };
         }
@@ -105,6 +108,10 @@ public class TherapyClassLogic : ClassSubjectLogic
             var trait = student.story.traits.GetTrait(targetTraumaticTrait);
             student.story.traits.RemoveTrait(trait);
         }
+        else if (focusType == TherapyFocusType.ResolveTraumaticDesire)
+        {
+            WantsAndQuirksCompat.ResolveTraumaticDesire(student, targetTraumaticDesireDefName);
+        }
     }
     public override string GetCompletionLetterLabel()
     {
@@ -121,6 +128,7 @@ public class TherapyClassLogic : ClassSubjectLogic
             TherapyFocusType.MentalStability => "PT_TherapyCompletedDesc_MentalStability".Translate(student),
             TherapyFocusType.RestTraumaticPassion => "PT_TherapyCompletedDesc_RestTraumaticPassion".Translate(student, targetTraumaticSkill.LabelCap),
             TherapyFocusType.ResolveTraumaticTrait => "PT_TherapyCompletedDesc_ResolveTraumaticTrait".Translate(student, targetTraumaticTrait.DataAtDegree(0).GetLabelFor(student)),
+            TherapyFocusType.ResolveTraumaticDesire => "PT_TherapyCompletedDesc_ResolveTraumaticDesire".Translate(student, WantsAndQuirksCompat.GetTraumaticDesireLabel(targetTraumaticDesireDefName)),
             _ => null
         };
     }
@@ -147,6 +155,7 @@ public class TherapyClassLogic : ClassSubjectLogic
         Scribe_Defs.Look(ref targetMemoryDef, "targetMemoryDef");
         Scribe_Defs.Look(ref targetTraumaticSkill, "targetTraumaticSkill");
         Scribe_Defs.Look(ref targetTraumaticTrait, "targetTraumaticTrait");
+        Scribe_Values.Look(ref targetTraumaticDesireDefName, "targetTraumaticDesireDefName");
     }
 
     public override ClassSubjectLogic DeepClone(StudyGroup parent) => new TherapyClassLogic(parent)
@@ -154,7 +163,8 @@ public class TherapyClassLogic : ClassSubjectLogic
         focusType = focusType,
         targetMemoryDef = targetMemoryDef,
         targetTraumaticSkill = targetTraumaticSkill,
-        targetTraumaticTrait = targetTraumaticTrait
+        targetTraumaticTrait = targetTraumaticTrait,
+        targetTraumaticDesireDefName = targetTraumaticDesireDefName
     };
 
     public override float CalculateStudentScore(Pawn p) => 1f;
@@ -179,6 +189,10 @@ public class TherapyClassLogic : ClassSubjectLogic
         if (focusType == TherapyFocusType.ResolveTraumaticTrait && TraumaAndIntegrityCompat.GetTraumaticTrait(student) == null)
         {
             return new AcceptanceReport("PT_PatientNotTempered".Translate(student.LabelShort));
+        }
+        if (focusType == TherapyFocusType.ResolveTraumaticDesire && !WantsAndQuirksCompat.GetTraumaticDesireDefNames(student).Contains(targetTraumaticDesireDefName))
+        {
+            return new AcceptanceReport("PT_PatientNoTraumaticDesire".Translate(student.LabelShort));
         }
         return AcceptanceReport.WasAccepted;
     }
@@ -217,6 +231,10 @@ public class TherapyClassLogic : ClassSubjectLogic
         {
             return;
         }
+        if (focusType == TherapyFocusType.ResolveTraumaticDesire && !WantsAndQuirksCompat.HasTraumaticDesire(student))
+        {
+            return;
+        }
         curY += 30f;
 
         switch (focusType)
@@ -229,6 +247,9 @@ public class TherapyClassLogic : ClassSubjectLogic
                 break;
             case TherapyFocusType.ResolveTraumaticTrait:
                 DrawResolveTraumaticTraitUI(rect, ref curY, student, classDialog);
+                break;
+            case TherapyFocusType.ResolveTraumaticDesire:
+                DrawResolveTraumaticDesireUI(rect, ref curY, student, classDialog);
                 break;
             case TherapyFocusType.MentalStability:
                 DrawMentalStabilityUI(rect, ref curY, student, classDialog);
@@ -269,6 +290,7 @@ public class TherapyClassLogic : ClassSubjectLogic
                 if (ProgressionTherapyMod.settings.enableMentalStability) options.Add(new FloatMenuOption("PT_Focus_MentalStability".Translate(), () => { focusType = TherapyFocusType.MentalStability; studyGroup.semesterGoal = 6500; }));
                 if (AlphaSkillsCompat.IsActive && AlphaSkillsCompat.GetTraumaticSkills(student).Any()) options.Add(new FloatMenuOption("PT_Focus_RestTraumaticPassion".Translate(), () => { focusType = TherapyFocusType.RestTraumaticPassion; studyGroup.semesterGoal = TraumaticPassionSemesterGoal; targetTraumaticSkill = AlphaSkillsCompat.GetTraumaticSkills(student).First(); }));
                 if (TraumaAndIntegrityCompat.IsActive && TraumaAndIntegrityCompat.GetTraumaticTrait(student) != null) options.Add(new FloatMenuOption("PT_Focus_ResolveTraumaticTrait".Translate(), () => { focusType = TherapyFocusType.ResolveTraumaticTrait; studyGroup.semesterGoal = 120000; targetTraumaticTrait = TraumaAndIntegrityCompat.GetTraumaticTrait(student); }));
+                if (WantsAndQuirksCompat.HasTraumaticDesire(student)) options.Add(new FloatMenuOption("PT_Focus_ResolveTraumaticDesire".Translate(), () => { focusType = TherapyFocusType.ResolveTraumaticDesire; studyGroup.semesterGoal = DefaultSemesterGoal; targetTraumaticDesireDefName = WantsAndQuirksCompat.GetTraumaticDesireDefNames(student).FirstOrDefault(); }));
                 Find.WindowStack.Add(new FloatMenu(options));
             }
         }
@@ -350,8 +372,30 @@ public class TherapyClassLogic : ClassSubjectLogic
         TherapyFocusType.MentalStability => "PT_Focus_MentalStability".Translate(),
         TherapyFocusType.RestTraumaticPassion => "PT_Focus_RestTraumaticPassion".Translate(),
         TherapyFocusType.ResolveTraumaticTrait => "PT_Focus_ResolveTraumaticTrait".Translate(),
+        TherapyFocusType.ResolveTraumaticDesire => "PT_Focus_ResolveTraumaticDesire".Translate(),
         _ => "None".Translate()
     };
+
+    private void DrawResolveTraumaticDesireUI(Rect rect, ref float curY, Pawn student, IClassDialog classDialog)
+    {
+        Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_SelectTraumaticDesire".Translate());
+        var buttonLabel = WantsAndQuirksCompat.GetTraumaticDesireLabel(targetTraumaticDesireDefName);
+        if (classDialog is Dialog_EditClass)
+        {
+            Widgets.Label(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel);
+        }
+        else
+        {
+            if (Widgets.ButtonText(new Rect(rect.x + 160f, curY, 200f, 25f), buttonLabel))
+            {
+                var options = WantsAndQuirksCompat.GetTraumaticDesireDefNames(student)
+                    .Select(defName => new FloatMenuOption(WantsAndQuirksCompat.GetTraumaticDesireLabel(defName), () => targetTraumaticDesireDefName = defName))
+                    .ToList();
+                Find.WindowStack.Add(new FloatMenu(options));
+            }
+        }
+        curY += 30f;
+    }
 
     private void DrawMentalStabilityUI(Rect rect, ref float curY, Pawn student, IClassDialog classDialog)
     {
