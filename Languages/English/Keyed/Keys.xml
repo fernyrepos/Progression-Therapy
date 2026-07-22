@@ -36,8 +36,8 @@
   <PT_SelectTraumaticTrait>Select traumatic trait</PT_SelectTraumaticTrait>
   <PT_TherapyCompletedDesc_ResolveTraumaticTrait>{0} has successfully worked through their traumatic trait and left it behind.</PT_TherapyCompletedDesc_ResolveTraumaticTrait>
   <PT_PatientNotTempered>{0} is not tempered.</PT_PatientNotTempered>
-  <PT_Focus_ResolveTraumaticDesire>Rest traumatic desire</PT_Focus_ResolveTraumaticDesire>
+  <PT_Focus_ResolveTraumaticDesire>Rest a traumatic desire</PT_Focus_ResolveTraumaticDesire>
   <PT_SelectTraumaticDesire>Traumatic desire</PT_SelectTraumaticDesire>
   <PT_TherapyCompletedDesc_ResolveTraumaticDesire>{0_nameDef} has successfully worked through {0_possessive} traumatic desire and left it behind.</PT_TherapyCompletedDesc_ResolveTraumaticDesire>
-  <PT_PatientNoTraumaticDesire>{0} has no traumatic desire.</PT_PatientNoTraumaticDesire>
+  <PT_PatientNoTraumaticDesire>{0} has no traumatic desires.</PT_PatientNoTraumaticDesire>
 </LanguageData>
