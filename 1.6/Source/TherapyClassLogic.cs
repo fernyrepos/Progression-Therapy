@@ -62,8 +62,8 @@ public class TherapyClassLogic : ClassSubjectLogic
                 TherapyFocusType.ImproveMood => baseScore * ProgressionTherapyMod.settings.moodSpeedMultiplier,
                 TherapyFocusType.WorkThroughMemory => (baseScore * ProgressionTherapyMod.settings.memorySpeedMultiplier) * 1.5f,
                 TherapyFocusType.RestTraumaticPassion => baseScore * ProgressionTherapyMod.settings.passionSpeedMultiplier,
-                TherapyFocusType.ResolveTraumaticTrait => baseScore * ProgressionTherapyMod.settings.passionSpeedMultiplier,
-                TherapyFocusType.ResolveTraumaticDesire => baseScore * ProgressionTherapyMod.settings.passionSpeedMultiplier,
+                TherapyFocusType.ResolveTraumaticTrait => baseScore * ProgressionTherapyMod.settings.traitSpeedMultiplier,
+                TherapyFocusType.ResolveTraumaticDesire => (baseScore * ProgressionTherapyMod.settings.desireSpeedMultiplier) * 2f,
                 _ => baseScore
             };
         }

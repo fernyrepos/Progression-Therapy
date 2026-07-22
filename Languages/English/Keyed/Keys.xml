@@ -17,7 +17,9 @@
   <PT_GlobalNerfMentalBreakThreshold>Global nerf of mental break threshold: {0}</PT_GlobalNerfMentalBreakThreshold>
   <PT_SpeedMultiplierMood>Speed multiplier for mood classes: {0}</PT_SpeedMultiplierMood>
   <PT_SpeedMultiplierMemory>Speed multiplier for memory classes: {0}</PT_SpeedMultiplierMemory>
-  <PT_SpeedMultiplierPassion>Speed multiplier for passion classes: {0}</PT_SpeedMultiplierPassion>
+  <PT_SpeedMultiplierPassion>Speed multiplier for rest traumatic passion: {0}</PT_SpeedMultiplierPassion>
+  <PT_SpeedMultiplierTrait>Speed multiplier for resolve traumatic trait: {0}</PT_SpeedMultiplierTrait>
+  <PT_SpeedMultiplierDesire>Speed multiplier for resolve traumatic desire: {0}</PT_SpeedMultiplierDesire>
   <PT_SpeedMultiplierStability>Speed multiplier for composure classes: {0}</PT_SpeedMultiplierStability>
   <PT_StabilityProgress>{0}% stability increase</PT_StabilityProgress>
   <PT_TherapistRole>therapist</PT_TherapistRole>

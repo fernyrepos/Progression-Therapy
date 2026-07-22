@@ -30,6 +30,10 @@ namespace ProgressionTherapy
 			settings.memorySpeedMultiplier = listing.Slider(settings.memorySpeedMultiplier, 0.1f, 10f);
 			listing.Label("PT_SpeedMultiplierPassion".Translate(settings.passionSpeedMultiplier.ToStringPercent()));
 			settings.passionSpeedMultiplier = listing.Slider(settings.passionSpeedMultiplier, 0.1f, 10f);
+			listing.Label("PT_SpeedMultiplierTrait".Translate(settings.traitSpeedMultiplier.ToStringPercent()));
+			settings.traitSpeedMultiplier = listing.Slider(settings.traitSpeedMultiplier, 0.1f, 10f);
+			listing.Label("PT_SpeedMultiplierDesire".Translate(settings.desireSpeedMultiplier.ToStringPercent()));
+			settings.desireSpeedMultiplier = listing.Slider(settings.desireSpeedMultiplier, 0.1f, 10f);
 			listing.Label("PT_SpeedMultiplierStability".Translate(settings.mentalStabilitySpeedMultiplier.ToStringPercent()));
 			settings.mentalStabilitySpeedMultiplier = listing.Slider(settings.mentalStabilitySpeedMultiplier, 0.1f, 10f);
 			listing.End();
@@ -48,6 +52,8 @@ namespace ProgressionTherapy
 		public float moodSpeedMultiplier = 1f;
 		public float memorySpeedMultiplier = 1f;
 		public float passionSpeedMultiplier = 1f;
+		public float traitSpeedMultiplier = 1f;
+		public float desireSpeedMultiplier = 1f;
 		public float mentalStabilitySpeedMultiplier = 1f;
 
 		public override void ExposeData()
@@ -61,6 +67,8 @@ namespace ProgressionTherapy
 			Scribe_Values.Look(ref moodSpeedMultiplier, "moodSpeedMultiplier", 1f);
 			Scribe_Values.Look(ref memorySpeedMultiplier, "memorySpeedMultiplier", 1f);
 			Scribe_Values.Look(ref passionSpeedMultiplier, "passionSpeedMultiplier", 1f);
+			Scribe_Values.Look(ref traitSpeedMultiplier, "traitSpeedMultiplier", 1f);
+			Scribe_Values.Look(ref desireSpeedMultiplier, "desireSpeedMultiplier", 1f);
 			Scribe_Values.Look(ref mentalStabilitySpeedMultiplier, "mentalStabilitySpeedMultiplier", 1f);
 		}
 	}
