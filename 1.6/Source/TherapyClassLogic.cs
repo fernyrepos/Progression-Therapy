@@ -259,7 +259,7 @@ public class TherapyClassLogic : ClassSubjectLogic
         var progressPerTick = ProgressPerTick;
         if (progressPerTick > 0 && !studyGroup.subjectLogic.IsInfinite)
         {
-            var progressRemaining = studyGroup.semesterGoal - studyGroup.currentProgress;
+            var progressRemaining = Mathf.Max(0f, studyGroup.semesterGoal - studyGroup.currentProgress);
             var estimatedTicks = Mathf.CeilToInt(progressRemaining / progressPerTick);
             Widgets.Label(new Rect(rect.x, curY, 360f, 25f),
                 "PE_StudyTimeNeeded".Translate(estimatedTicks.ToStringTicksToPeriod()));
