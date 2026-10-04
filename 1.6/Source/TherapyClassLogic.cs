@@ -26,6 +26,8 @@ public class TherapyClassLogic : ClassSubjectLogic
     public TraitDef targetTraumaticTrait;
     public string targetTraumaticDesireDefName;
 
+    private bool lastResolveTraitFailed;
+
     private const float MentalStabilityProgressMultiplier = 0.05f;
     private const int TraumaticPassionSemesterGoal = 60000;
     private const float MentalStabilityProgressDivisor = 10000f;
@@ -105,14 +107,22 @@ public class TherapyClassLogic : ClassSubjectLogic
         }
         else if (focusType == TherapyFocusType.ResolveTraumaticTrait)
         {
-            var trait = student.story.traits.GetTrait(targetTraumaticTrait);
-            student.story.traits.RemoveTrait(trait);
+            lastResolveTraitFailed = !TryResolveTraumaticTrait(student);
         }
         else if (focusType == TherapyFocusType.ResolveTraumaticDesire)
         {
             WantsAndQuirksCompat.ResolveTraumaticDesire(student, targetTraumaticDesireDefName);
         }
     }
+    private bool TryResolveTraumaticTrait(Pawn student)
+    {
+        if (targetTraumaticTrait == null || student.story?.traits == null) return false;
+        var trait = student.story.traits.GetTrait(targetTraumaticTrait);
+        if (trait == null) return false;
+        student.story.traits.RemoveTrait(trait);
+        return true;
+    }
+
     public override string GetCompletionLetterLabel()
     {
         return "PT_TherapyCompleted".Translate();
@@ -127,7 +137,9 @@ public class TherapyClassLogic : ClassSubjectLogic
             TherapyFocusType.WorkThroughMemory => "PT_TherapyCompletedDesc_WorkThroughMemory".Translate(student, targetMemoryDef.LabelCap),
             TherapyFocusType.MentalStability => "PT_TherapyCompletedDesc_MentalStability".Translate(student),
             TherapyFocusType.RestTraumaticPassion => "PT_TherapyCompletedDesc_RestTraumaticPassion".Translate(student, targetTraumaticSkill.LabelCap),
-            TherapyFocusType.ResolveTraumaticTrait => "PT_TherapyCompletedDesc_ResolveTraumaticTrait".Translate(student, targetTraumaticTrait.DataAtDegree(0).GetLabelFor(student)),
+            TherapyFocusType.ResolveTraumaticTrait => lastResolveTraitFailed
+                ? "PT_TherapyCompletedDesc_ResolveTraumaticTrait_Failed".Translate(student)
+                : "PT_TherapyCompletedDesc_ResolveTraumaticTrait".Translate(student, targetTraumaticTrait.DataAtDegree(0).GetLabelFor(student)),
             TherapyFocusType.ResolveTraumaticDesire => "PT_TherapyCompletedDesc_ResolveTraumaticDesire".Translate(student, WantsAndQuirksCompat.GetTraumaticDesireLabel(targetTraumaticDesireDefName)),
             _ => null
         };
@@ -200,7 +212,8 @@ public class TherapyClassLogic : ClassSubjectLogic
     public override AcceptanceReport IsTeacherQualified(Pawn teacher)
     {
         var social = teacher.skills.GetSkill(SkillDefOf.Social);
-        if (social.Level < 15) return new AcceptanceReport("PT_TherapistNotQualified".Translate(teacher.LabelShort));
+        var requiredSocial = ProgressionTherapyMod.settings.requiredSocialSkill;
+        if (social.Level < requiredSocial) return new AcceptanceReport("PT_TherapistNotQualified".Translate(teacher.LabelShort, requiredSocial));
         var baseReport = base.IsTeacherQualified(teacher);
         if (!baseReport.Accepted)
         {
@@ -227,7 +240,7 @@ public class TherapyClassLogic : ClassSubjectLogic
         if (student == null) return;
 
         DrawFocusTypeSelector(rect, ref curY, student, classDialog);
-        if (focusType == TherapyFocusType.ResolveTraumaticTrait && TraumaAndIntegrityCompat.IsActive && TraumaAndIntegrityCompat.GetTraumaticTrait(student) == null)
+        if (focusType == TherapyFocusType.ResolveTraumaticTrait && TraumaAndIntegrityCompat.GetTraumaticTrait(student) == null)
         {
             return;
         }
@@ -349,6 +362,7 @@ public class TherapyClassLogic : ClassSubjectLogic
     {
         Widgets.Label(new Rect(rect.x, curY, 150f, 25f), "PT_SelectTraumaticTrait".Translate());
         var trait = TraumaAndIntegrityCompat.GetTraumaticTrait(student);
+        if (trait == null) return;
         var buttonLabel = trait.DataAtDegree(0).GetLabelCapFor(student);
         if (classDialog is Dialog_EditClass)
         {

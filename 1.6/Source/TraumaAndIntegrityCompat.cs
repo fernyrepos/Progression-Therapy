@@ -23,9 +23,16 @@ namespace ProgressionTherapy
 
         public static TraitDef GetTraumaticTrait(Pawn pawn)
         {
-            if (!IsActive) return null;
+            return GetResolvableTraumaticTrait(pawn)?.def;
+        }
+
+        public static Trait GetResolvableTraumaticTrait(Pawn pawn)
+        {
+            if (!IsActive || pawn?.story?.traits == null) return null;
             var data = GetDataMethod.Invoke(null, new object[] { pawn });
-            return (TraitDef)TraumaticTraitMethod.Invoke(data, new object[] { pawn });
+            var def = (TraitDef)TraumaticTraitMethod.Invoke(data, new object[] { pawn });
+            if (def == null) return null;
+            return pawn.story.traits.GetTrait(def);
         }
     }
 }

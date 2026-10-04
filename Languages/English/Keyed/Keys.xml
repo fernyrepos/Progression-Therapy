@@ -15,6 +15,7 @@
   <PT_EnableMentalStabilitySystem>Enable composure system?</PT_EnableMentalStabilitySystem>
   <PT_EnableWorkingThroughMemories>Enable working through memories?</PT_EnableWorkingThroughMemories>
   <PT_GlobalNerfMentalBreakThreshold>Global nerf of mental break threshold: {0}</PT_GlobalNerfMentalBreakThreshold>
+  <PT_RequiredSocialSkill>Social skill required to be a therapist: {0}</PT_RequiredSocialSkill>
   <PT_SpeedMultiplierMood>Speed multiplier for mood classes: {0}</PT_SpeedMultiplierMood>
   <PT_SpeedMultiplierMemory>Speed multiplier for memory classes: {0}</PT_SpeedMultiplierMemory>
   <PT_SpeedMultiplierPassion>Speed multiplier for rest traumatic passion: {0}</PT_SpeedMultiplierPassion>
@@ -33,10 +34,11 @@
   <PT_TherapyCompletedDesc_RestTraumaticPassion>{0_nameDef} has successfuly rested {0_possessive} traumatic passion.</PT_TherapyCompletedDesc_RestTraumaticPassion>
   <PT_PatientUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_PatientUnavailable>
   <PT_TherapistUnavailable>{0} is unavailable (downed, in mental state, or drafted).</PT_TherapistUnavailable>
-  <PT_TherapistNotQualified>{0} is not qualified (15 social skill level required).</PT_TherapistNotQualified>
+  <PT_TherapistNotQualified>{0} is not qualified ({1} social skill level required).</PT_TherapistNotQualified>
   <PT_Focus_ResolveTraumaticTrait>Rest traumatic trait</PT_Focus_ResolveTraumaticTrait>
   <PT_SelectTraumaticTrait>Select traumatic trait</PT_SelectTraumaticTrait>
   <PT_TherapyCompletedDesc_ResolveTraumaticTrait>{0} has successfully worked through their traumatic trait and left it behind.</PT_TherapyCompletedDesc_ResolveTraumaticTrait>
+  <PT_TherapyCompletedDesc_ResolveTraumaticTrait_Failed>{0} finished therapy, but their traumatic trait could no longer be reached due to an error and remains in place. Report this to Ferny with logs.</PT_TherapyCompletedDesc_ResolveTraumaticTrait_Failed>
   <PT_PatientNotTempered>{0} is not tempered.</PT_PatientNotTempered>
   <PT_Focus_ResolveTraumaticDesire>Rest a traumatic desire</PT_Focus_ResolveTraumaticDesire>
   <PT_SelectTraumaticDesire>Traumatic desire</PT_SelectTraumaticDesire>

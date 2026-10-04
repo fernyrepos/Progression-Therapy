@@ -22,6 +22,9 @@ namespace ProgressionTherapy
 			listing.CheckboxLabeled("PT_EnableMentalStabilitySystem".Translate(), ref settings.enableMentalStability);
 			listing.CheckboxLabeled("PT_EnableWorkingThroughMemories".Translate(), ref settings.enableWorkingMemories);
 			listing.Gap();
+			listing.Label("PT_RequiredSocialSkill".Translate(settings.requiredSocialSkill));
+			settings.requiredSocialSkill = Mathf.RoundToInt(listing.Slider(settings.requiredSocialSkill, 0f, 20f));
+			listing.Gap();
 			listing.Label("PT_GlobalNerfMentalBreakThreshold".Translate(settings.globalMentalBreakNerf.ToStringPercent()));
 			settings.globalMentalBreakNerf = listing.Slider(settings.globalMentalBreakNerf, 0f, 1f);
 			listing.Label("PT_SpeedMultiplierMood".Translate(settings.moodSpeedMultiplier.ToStringPercent()));
@@ -48,6 +51,7 @@ namespace ProgressionTherapy
 		public bool enableImproveMood = true;
 		public bool enableMentalStability = true;
 		public bool enableWorkingMemories = true;
+		public int requiredSocialSkill = 15;
 		public float globalMentalBreakNerf = 0.25f;
 		public float moodSpeedMultiplier = 1f;
 		public float memorySpeedMultiplier = 1f;
@@ -63,6 +67,7 @@ namespace ProgressionTherapy
 			Scribe_Values.Look(ref enableImproveMood, "enableImproveMood", true);
 			Scribe_Values.Look(ref enableMentalStability, "enableMentalStability", true);
 			Scribe_Values.Look(ref enableWorkingMemories, "enableWorkingMemories", true);
+			Scribe_Values.Look(ref requiredSocialSkill, "requiredSocialSkill", 15);
 			Scribe_Values.Look(ref globalMentalBreakNerf, "globalMentalBreakNerf", 0.25f);
 			Scribe_Values.Look(ref moodSpeedMultiplier, "moodSpeedMultiplier", 1f);
 			Scribe_Values.Look(ref memorySpeedMultiplier, "memorySpeedMultiplier", 1f);
